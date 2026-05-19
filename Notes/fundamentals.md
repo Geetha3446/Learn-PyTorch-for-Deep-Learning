@@ -49,8 +49,8 @@ torch.as_tensor() tries to share memory with the original object.
 Why?
 Both share the same memory.
 So changing the NumPy array also changes the tensor.
-
 torch.as_tensor() tries to share memory with the original object.
+
 # Summary Table
 | Method              | Copies Data? | Shares Memory? | Keeps Grad History? |
 | ------------------- | ------------ | -------------- | ------------------- |
@@ -67,6 +67,7 @@ It tells PyTorch whether to use:
 CPU
 GPU (CUDA)
 other hardware accelerators
+
 # summary
 | Device     | Meaning        |
 | ---------- | -------------- |
@@ -134,6 +135,7 @@ Sometimes you might want one tensor of a certain type with the same shape as ano
 For example, a tensor of all zeros with the same shape as a previous tensor.
 
 To do so you can use torch.zeros_like(input) or torch.ones_like(input) which return a tensor filled with zeros or ones in the same shape as the input respectively.
+
 ## Can also create a tensor of zeros similar to another tensor
 ten_zeros = torch.zeros_like(input=zero_to_ten) # will have same shape
 ten_zeros
@@ -221,7 +223,6 @@ tensor.T - where tensor is the desired tensor to transpose.
 You can also use torch.mm() which is a short for torch.matmul()
 
 ## How a neural network layer like torch.nn.Linear() works internally using matrix multiplication.
-
 A linear layer performs:
 y = x.A^T+b
 where:
@@ -242,3 +243,63 @@ linear = torch.nn.Linear(
 x = tensor_A
 
 output = linear(x)
+
+# Finding the min, max, mean, sum, etc (aggregation)
+x = torch.arange(0, 100, 10)
+x.min(), x.max(), x.sum()
+x.mean() wrong becoz You may find some methods such as torch.mean() require tensors to be in torch.float32 (the most common) or another specific datatype, otherwise the operation will fail.
+x.type(torch.float32).mean()
+The index of a tensor where the max or minimum occurs with torch.argmax()or x.argmax() and torch.argmin() or x.argmin() respectively.
+
+As mentioned, a common issue with deep learning operations is having your tensors in different datatypes.
+
+If one tensor is in torch.float64 and another is in torch.float32, you might run into some errors.
+
+But there's a fix.
+
+You can change the datatypes of tensors using torch.Tensor.type(dtype=None) where the dtype parameter is the datatype you'd like to use.
+
+# Reshaping, stacking, squeezing and unsqueezing
+Often times you'll want to reshape or change the dimensions of your tensors without actually changing the values inside them.
+
+To do so, some popular methods are:
+
+![alt text](image6.png)
+
+Why do any of these?
+
+Because deep learning models (neural networks) are all about manipulating tensors in some way. And because of the rules of matrix multiplication, if you've got shape mismatches, you'll run into errors. These methods help you make sure the right elements of your tensors are mixing with the right elements of other tensors.
+
+## Summary
+| Method        | Purpose                            |
+| ------------- | ---------------------------------- |
+| `reshape()`   | Change shape                       |
+| `view()`      | Change shape sharing memory        |
+| `stack()`     | Combine tensors into new dimension |
+| `squeeze()`   | Remove dimensions of size 1        |
+| `unsqueeze()` | Add dimension of size 1            |
+| `permute()`   | Rearrange dimensions               |
+
+# Indexing (selecting data from tensors)
+Indexing values goes outer dimension -> inner dimension (check out the square brackets).
+You can also use : to specify "all values in this dimension" and then use a comma (,) to add another dimension.
+
+# PyTorch tensors & NumPy
+The two main methods you'll want to use for NumPy to PyTorch (and back again) are:
+
+torch.from_numpy(ndarray) - NumPy array -> PyTorch tensor.
+torch.Tensor.numpy() - PyTorch tensor -> NumPy array.
+
+Why float64?
+NumPy defaults to: float64
+PyTorch usually defaults to: float32
+for deep learning because:
+faster
+less memory
+optimized on GPUs
+
+Convert to float32
+tensor = torch.from_numpy(array).type(torch.float32)
+
+Now datatype becomes:
+float32
