@@ -19,36 +19,56 @@ The first thing we're going to create is a ###scalar.
 A scalar is a single number and in tensor-speak (the language used to describe tensors), it's a zero dimension tensor.
 
 Okay, now let's see a ###vector.
+
 A vector is a single dimension tensor but can contain many numbers.
+
 As in, you could have a vector [3, 2] to describe [bedrooms, bathrooms] in your house. Or you could have [3, 2, 2] to describe [bedrooms, bathrooms, car_parks] in your house.
+
 The important trend here is that a vector is flexible in what it can represent (the same with tensors).
 
 the number of dimensions a tensor in PyTorch has by the number of square brackets on the outside ([) and you only need to count one side.
 
 Let's now see a ###matrix.
+
 MATRIX has two dimensions
+
 torch.Size([2, 2]) because MATRIX is two elements deep and two elements wide.
 
 ![alt text](image1.png)
+
 ![alt text](image4.png)
 
 
 # playing with tensors
 ## torch.tensor
 A torch.Tensor is a multi-dimensional matrix containing elements of a single data type.
-torch.tensor() always copies data. If you have a Tensor data and just want to change its requires_grad flag, use requires_grad_() or detach() to avoid a copy. If you have a numpy array and want to avoid a copy, use torch.as_tensor().
+
+torch.tensor() always copies data. If you have a Tensor data and just want to change its requires_grad flag, use requires_grad_() or detach() to avoid a copy.
+
+If you have a numpy array and want to avoid a copy, use torch.as_tensor().
+
 torch.tensor() → Always creates a copy
+
 PyTorch allocates new memory and copies the data.
+
 ![alt text](image2.png)
+
 Why?
+
 t1 does NOT change because torch.tensor() copied the NumPy data into a new tensor.
 
 torch.as_tensor() → Avoids copy when possible
+
 torch.as_tensor() tries to share memory with the original object.
+
 ![alt text](image3.png)
+
 Why?
+
 Both share the same memory.
+
 So changing the NumPy array also changes the tensor.
+
 torch.as_tensor() tries to share memory with the original object.
 
 # Summary Table
@@ -63,9 +83,13 @@ torch.as_tensor() tries to share memory with the original object.
 A tensor of specific data type can be constructed by passing a torch.dtype and/or a torch.device to a constructor or tensor creation op
 
 torch.device is used in PyTorch to specify where a tensor or model should be stored and computed.
+
 It tells PyTorch whether to use:
+
 CPU
+
 GPU (CUDA)
+
 other hardware accelerators
 
 # summary
@@ -75,40 +99,60 @@ other hardware accelerators
 | `"cuda"`   | Use NVIDIA GPU |
 | `"cuda:0"` | First GPU      |
 | `"cuda:1"` | Second GPU     |
+
 To change an existing tensor’s torch.device and/or torch.dtype, consider using to() method on the tensor.
 
 # Slicing
 The contents of a tensor can be accessed and modified using Python’s indexing and slicing notation:
+
 Use torch.Tensor.item() to get a Python number from a tensor containing a single value
+
 torch.FloatTensor.abs_() computes the absolute value in-place and returns the modified tensor, while torch.FloatTensor.abs() computes the result in a new tensor.
 
 # demonstrates automatic differentiation in PyTorch Autograd
 PyTorch automatically computes derivatives (gradients) using the computation graph.
 
 import torch
-x = torch.tensor([[1., -1.],
-                  [1.,  1.]], requires_grad=True)
+
+x = torch.tensor([[1., -1.],[1.,  1.]], requires_grad=True)
+                  
 out = x.pow(2).sum()
+
 out.backward()
+
 print(x.grad)
 
 ##visual flow
+
 x
+
  ↓
+ 
 square
+
  ↓
+ 
 sum
+
  ↓
+ 
 out
+
  ↓ backward()
+ 
 gradients stored in x.grad
 
 ## Why is this useful?
 Deep learning training works using gradients.
+
 PyTorch computes derivatives automatically for:
+
 neural networks
+
 loss functions
+
 optimization
+
 instead of manually calculating calculus.
 
 
@@ -116,18 +160,25 @@ instead of manually calculating calculus.
 A machine learning model often starts out with large random tensors of numbers and adjusts these random numbers as it works through data to better represent it.
 
 In essence:
+
 Start with random numbers -> look at data -> update random numbers -> look at data -> update random numbers...
 
 As a data scientist, you can define how the machine learning model starts (initialization), looks at data (representation) and updates (optimization) its random numbers.
+
 using torch.rand() and passing in the size parameter.
 
 ## Creating a range and tensors like
 Sometimes you might want a range of numbers, such as 1 to 10 or 0 to 100.
 You can use torch.arange(start, end, step) to do so.
+
 Where:
+
 start = start of range (e.g. 0)
+
 end = end of range (e.g. 10)
+
 step = how many steps in between each value (e.g. 1)
+
 Note: In Python, you can use range() to create a range. However in PyTorch, torch.range() is deprecated and may show an error in the future.
 
 Sometimes you might want one tensor of a certain type with the same shape as another tensor.
@@ -138,20 +189,25 @@ To do so you can use torch.zeros_like(input) or torch.ones_like(input) which ret
 
 ## Can also create a tensor of zeros similar to another tensor
 ten_zeros = torch.zeros_like(input=zero_to_ten) # will have same shape
+
 ten_zeros
 
 # Tensor datatypes
 The reason for having many datatypes (float16, float32, int8, etc.) is mainly:
 
 Trade-off between:
+
 Precision (accuracy of numbers)
+
 Memory usage
+
 Computation speed
 
 You cannot maximize all three at once.
 
 ## Precision in Computing
 Precision is the amount of detail used to describe a number.
+
 Precision means:
     How accurately a computer can store numbers.
 
@@ -182,11 +238,17 @@ PyTorch implements matrix multiplication functionality in the torch.matmul() met
 The main two rules for matrix multiplication to remember are:
 
 The inner dimensions must match:
-(3, 2) @ (3, 2) won't work \|
+
+(3, 2) @ (3, 2) won't work 
+
 (2, 3) @ (3, 2) will work
+
 (3, 2) @ (2, 3) will work
+
 The resulting matrix has the shape of the outer dimensions:
+
 (2, 3) @ (3, 2) -> (2, 2)
+
 (3, 2) @ (2, 3) -> (3, 3)
 
 ![alt text](image5.png)
@@ -194,8 +256,11 @@ The resulting matrix has the shape of the outer dimensions:
 %%time is a Jupyter Notebook magic command used to measure how long a code cell takes to execute.
 
 It is commonly used in:
+
 Jupyter Notebook
+
 Google Colab
+
 Kaggle notebooks
 
 | Term      | Meaning                          |
@@ -219,18 +284,28 @@ One of the ways to do this is with a transpose (switch the dimensions of a given
 You can perform transposes in PyTorch using either:
 
 torch.transpose(input, dim0, dim1) - where input is the desired tensor to transpose and dim0 and dim1 are the dimensions to be swapped.
+
 tensor.T - where tensor is the desired tensor to transpose.
+
 You can also use torch.mm() which is a short for torch.matmul()
 
 ## How a neural network layer like torch.nn.Linear() works internally using matrix multiplication.
 A linear layer performs:
+
 y = x.A^T+b
+
 where:
+
 x = input
+
 A = weights matrix
+
 A^T = transpose of weights
+
 b = bias
+
 y = output
+
 Try changing the values of in_features and out_features below and see what happens.
 
 torch.manual_seed(42)
@@ -246,9 +321,13 @@ output = linear(x)
 
 # Finding the min, max, mean, sum, etc (aggregation)
 x = torch.arange(0, 100, 10)
+
 x.min(), x.max(), x.sum()
+
 x.mean() wrong becoz You may find some methods such as torch.mean() require tensors to be in torch.float32 (the most common) or another specific datatype, otherwise the operation will fail.
+
 x.type(torch.float32).mean()
+
 The index of a tensor where the max or minimum occurs with torch.argmax()or x.argmax() and torch.argmin() or x.argmin() respectively.
 
 As mentioned, a common issue with deep learning operations is having your tensors in different datatypes.
@@ -282,6 +361,7 @@ Because deep learning models (neural networks) are all about manipulating tensor
 
 # Indexing (selecting data from tensors)
 Indexing values goes outer dimension -> inner dimension (check out the square brackets).
+
 You can also use : to specify "all values in this dimension" and then use a comma (,) to add another dimension.
 
 # PyTorch tensors & NumPy
@@ -291,15 +371,23 @@ torch.from_numpy(ndarray) - NumPy array -> PyTorch tensor.
 torch.Tensor.numpy() - PyTorch tensor -> NumPy array.
 
 Why float64?
+
 NumPy defaults to: float64
+
 PyTorch usually defaults to: float32
+
 for deep learning because:
+
 faster
+
 less memory
+
 optimized on GPUs
 
 Convert to float32
+
 tensor = torch.from_numpy(array).type(torch.float32)
 
 Now datatype becomes:
+
 float32
