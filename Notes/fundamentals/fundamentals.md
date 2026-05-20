@@ -43,7 +43,11 @@ torch.Size([2, 2]) because MATRIX is two elements deep and two elements wide.
 ## torch.tensor
 A torch.Tensor is a multi-dimensional matrix containing elements of a single data type.
 
+<<<<<<< HEAD
 torch.tensor() always copies data. If you have a Tensor data and just want to change its requires_grad flag, use requires_grad_() or detach() to avoid a copy.
+=======
+torch.tensor() always copies data. If you have a Tensor data and just want to change its requires_grad flag, use requires_grad_() or detach() to avoid a copy. 
+>>>>>>> e53edaa (save)
 
 If you have a numpy array and want to avoid a copy, use torch.as_tensor().
 
@@ -114,8 +118,14 @@ PyTorch automatically computes derivatives (gradients) using the computation gra
 
 import torch
 
+<<<<<<< HEAD
 x = torch.tensor([[1., -1.],[1.,  1.]], requires_grad=True)
                   
+=======
+x = torch.tensor([[1., -1.],
+                  [1.,  1.]], requires_grad=True)
+
+>>>>>>> e53edaa (save)
 out = x.pow(2).sum()
 
 out.backward()
@@ -127,6 +137,7 @@ print(x.grad)
 x
 
  ↓
+<<<<<<< HEAD
  
 square
 
@@ -140,6 +151,21 @@ out
 
  ↓ backward()
  
+=======
+
+square
+
+ ↓
+
+sum
+
+ ↓
+
+out
+
+ ↓ backward()
+
+>>>>>>> e53edaa (save)
 gradients stored in x.grad
 
 ## Why is this useful?
@@ -169,6 +195,7 @@ using torch.rand() and passing in the size parameter.
 
 ## Creating a range and tensors like
 Sometimes you might want a range of numbers, such as 1 to 10 or 0 to 100.
+
 You can use torch.arange(start, end, step) to do so.
 
 Where:
@@ -239,7 +266,11 @@ The main two rules for matrix multiplication to remember are:
 
 The inner dimensions must match:
 
+<<<<<<< HEAD
 (3, 2) @ (3, 2) won't work 
+=======
+(3, 2) @ (3, 2) won't work
+>>>>>>> e53edaa (save)
 
 (2, 3) @ (3, 2) will work
 
@@ -368,6 +399,7 @@ You can also use : to specify "all values in this dimension" and then use a comm
 The two main methods you'll want to use for NumPy to PyTorch (and back again) are:
 
 torch.from_numpy(ndarray) - NumPy array -> PyTorch tensor.
+
 torch.Tensor.numpy() - PyTorch tensor -> NumPy array.
 
 Why float64?
@@ -390,4 +422,8 @@ tensor = torch.from_numpy(array).type(torch.float32)
 
 Now datatype becomes:
 
+<<<<<<< HEAD
 float32
+=======
+float32
+>>>>>>> e53edaa (save)
