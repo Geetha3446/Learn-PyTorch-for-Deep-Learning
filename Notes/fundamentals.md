@@ -182,7 +182,7 @@ PyTorch implements matrix multiplication functionality in the torch.matmul() met
 The main two rules for matrix multiplication to remember are:
 
 The inner dimensions must match:
-(3, 2) @ (3, 2) won't work |
+(3, 2) @ (3, 2) won't work \|
 (2, 3) @ (3, 2) will work
 (3, 2) @ (2, 3) will work
 The resulting matrix has the shape of the outer dimensions:
