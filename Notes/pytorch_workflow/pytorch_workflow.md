@@ -48,7 +48,7 @@ Beautiful! Now we're going to move towards building a model that can learn the r
 
 ### visualize it
 
-![alt text](image2.png)
+![alt text](image4.png)
 
 # 2. Build Model
 ## PyTorch model building essentials
@@ -151,7 +151,45 @@ Let's inspect our model's .state_dict() to see how close our model gets to the o
 
 This is the whole idea of machine learning and deep learning, there are some ideal values that describe our data and rather than figuring them out by hand, we can train a model to figure them out programmatically.
 
+# 4. Making predictions with a trained PyTorch model
 
+There are three things to remember when making predictions (also called performing inference) with a PyTorch model:
+
+Set the model in evaluation mode (model.eval()).
+
+Make the predictions using the inference mode context manager (with torch.inference_mode(): ...).
+
+All predictions should be made with objects on the same device (e.g. data and model on GPU only or data and model on CPU only).
+
+The first two items make sure all helpful calculations and settings PyTorch uses behind the scenes during training but aren't necessary for inference are turned off (this results in faster computation). 
+
+And the third ensures that you won't run into cross-device errors.
+
+# 5. Saving and loading a PyTorch model
+
+For saving and loading models in PyTorch, there are three main methods you should be aware of
+
+![alt text](image15.png)
+
+## Saving a PyTorch model's state_dict()
+
+The recommended way for saving and loading a model for inference (making predictions) is by saving and loading a model's state_dict().
+
+Let's see how we can do that in a few steps:
+
+We'll create a directory for saving models to called models using Python's pathlib module.
+
+We'll create a file path to save the model to.
+
+We'll call torch.save(obj, f) where obj is the target model's state_dict() and f is the filename of where to save the model.
+
+## Loading a saved PyTorch model's state_dict()
+
+Since we've now got a saved model state_dict() at models/01_pytorch_workflow_model_0.pth we can now load it in using torch.nn.Module.load_state_dict(torch.load(f)) where f is the filepath of our saved model state_dict().
+
+Why call torch.load() inside torch.nn.Module.load_state_dict()?
+
+Because we only saved the model's state_dict() which is a dictionary of learned parameters and not the entire model, we first have to load the state_dict() with torch.load() and then pass that state_dict() to a new instance of our model (which is a subclass of nn.Module).
 
 
 
